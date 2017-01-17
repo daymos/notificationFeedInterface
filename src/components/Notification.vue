@@ -1,7 +1,7 @@
 <template>
   <div v-bind:class="{unread: localData.status === 'unread'}" v-on:click="updateStatus" >
     <span><strong> {{ grabErrorMessage(localData.invite) }} </strong></span>
-    <span> {{ Date(localData.invite_time)}} </span>
+    <span> {{ `${formatDate(localData.invite_time)} ago |` }} </span>
     <span> {{ localData.status }} </span>
   </div>
 </template>
@@ -24,7 +24,7 @@ export default {
       return str.match(/\[(.*?)\]/)[1] 
     },
     formatDate(data) {
-      return moment().millisecond(data).fromNow(true)
+      return moment(data).fromNow(true)
     } 
   },
   components:  {

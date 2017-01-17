@@ -5,7 +5,7 @@
         <div class="invite">{{localData.invite}}</div>  
         <span class="sender">{{localData.sender_id}}</span>  
         <span class="vector">{{localData.vector}}</span>  
-        <span class="when">{{localData.invite_time}}</span>  
+        <span class="when">{{when(localData.invite_time)}}</span>  
       </div>
     </div>
   </div>
@@ -27,7 +27,7 @@ export default {
       this.localData = data 
     },
     when(ms) {
-      return  moment().millisecond(localData.invite_time).fromNow(true)
+      return (ms)? moment(ms).fromNow(true) : '' 
     }
   },
   created: function(){

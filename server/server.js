@@ -31,7 +31,7 @@ setInterval(function(){
   io.emit('newInvite', JSON.stringify(generateNewInvite()))
   console.log('emitting new Invite')
 }
-,3000)
+, ~~(Math.random() * 10000))
 
 http.listen(process.env.PORT || 3000, function(){
   console.log('listening on port: 3000');
