@@ -1,20 +1,25 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <notificationList></notificationList>
-    <rangeSelector></rangeSelector>
+    <div><img src="./assets/moog.png" display=''></div>
+    <div class="spacer"></div>
+    <div id='viewer'>
+      <BigNotification eventHub="eventHub" ></BigNotification>
+    </div>  
+    <notificationList class="list" eventHub="eventHub"></notificationList>
   </div>
 </template>
 
 <script>
 import NotificationList from './components/NotificationList';
-import rangeSelector from './components/rangeSelector';
+import BigNotification from './components/bigNotification.vue';
+import Vue from 'vue';
+import eventBus from './components/eventBus.vue'
+
 
 export default {
   name: 'app',
   components: {
-    rangeSelector,
-    NotificationList,
+    NotificationList, BigNotification, eventBus
   },
 };
 </script>
@@ -26,6 +31,40 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin: 60px;
 }
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+}
+
+.viewer {
+  width: 60%;
+  height: 200px;
+  float: left;
+  padding: 10px;
+}
+
+.list {
+  width: 40%;
+  float: left;
+}
+
+#inner{
+  border-style:solid;
+  border-width: 2px;
+  border-radius:5px;
+  height: 200px;
+}
+
+.spacer {
+  height: 50px;
+}
+
 </style>

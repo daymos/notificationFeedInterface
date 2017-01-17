@@ -1,5 +1,5 @@
 <template>
-  <input type="range" min="0" max="2" step="1"/>
+  <input v-model='filterParam' v-on:change='updateParent'  type="range" name='showOnlyUnread' min="0" max="1" step="1"  />
 </template>
 
 
@@ -7,7 +7,18 @@
 
 export default {
   name:'RangeSelector',
+  data(){
+    return {
+      filterParam:'0', 
+    };
+  },
+  methods: {
+    updateParent(){
+      this.$emit('filter', this.filterParam)
+    } 
+  }
 }
+
 </script>
 
 

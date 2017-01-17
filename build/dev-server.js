@@ -1,4 +1,5 @@
 require('./check-versions')()
+
 var config = require('../config')
 if (!process.env.NODE_ENV) process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
 var path = require('path')
@@ -8,14 +9,21 @@ var opn = require('opn')
 var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = require('./webpack.dev.conf')
 
+
+
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
+
 // Define HTTP proxies to your custom API backend
 // https://github.com/chimurai/http-proxy-middleware
 var proxyTable = config.dev.proxyTable
 
 var app = express()
+
+
 var compiler = webpack(webpackConfig)
+
+
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
@@ -58,6 +66,7 @@ app.use(staticPath, express.static('./static'))
 
 var uri = 'http://localhost:' + port
 
+
 devMiddleware.waitUntilValid(function () {
   console.log('> Listening at ' + uri + '\n')
 })
@@ -67,7 +76,6 @@ module.exports = app.listen(port, function (err) {
     console.log(err)
     return
   }
-
   // when env is testing, don't need open it
   if (process.env.NODE_ENV !== 'testing') {
     opn(uri)
