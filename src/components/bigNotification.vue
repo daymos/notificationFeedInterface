@@ -1,5 +1,4 @@
 <template>
-  <div class="bigView">
     <div class="inner">
       <div class="wrapDetails">
         <div class="invite">{{localData.invite}}</div>  
@@ -8,7 +7,6 @@
         <span class="when">{{when(localData.invite_time)}}</span>  
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -47,13 +45,6 @@ export default {
   border-width: 2px;
   border-radius:5px;
   position: relative;
-}
-
-.bigView {
-  padding: 10px;
-  float:left;
-  width: 60%;
-  height: 200px;
 }
 
 .wrapDetails {
