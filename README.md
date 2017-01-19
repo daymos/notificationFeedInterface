@@ -9,7 +9,7 @@
 npm install
 
 # serve with hot reload at localhost:8080
-# this will also launch a server at localhost:3000 that updates teh view via a socket
+# this will also launch three servers at localhost:3001,  localhost:3002, localhost:3003 that updates the view via a socket
 npm run dev
 
 # build for production with minification

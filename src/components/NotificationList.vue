@@ -29,7 +29,7 @@ export default {
       filterParam: '0',
       notifications: [] ,
       update: null,
-      map: {
+      dictionary: {
         mailServer: 'localhost:3001/',
         dbServer: 'localhost:3002/',
         smsServer: 'localhost:3003/' 
@@ -43,13 +43,10 @@ export default {
     updateFilterParam(param){
       this.filterParam = param 
     },
-    updateCurrentStream(streamId = 'localhost:3001') {
-      this.currentStream = this.map[streamId]
-    },
     updateObservable(socketUrl){
       this.notifications = [] 
       if(this.update !== null) this.update.complete()
-      let socket = io(this.map[socketUrl])
+      let socket = io(this.dictionary[socketUrl])
 
       this.update = Rx.Observable.fromEvent(socket, 'newInvite').subscribe(el => { 
         this.notifications.push(JSON.parse(el))
@@ -68,8 +65,6 @@ export default {
   }
 }
 </script>
-
-
 
 <style scoped>
 li {
