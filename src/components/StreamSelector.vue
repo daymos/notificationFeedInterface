@@ -4,6 +4,7 @@
       <button id='mailServer' v-on:click="emitSelection('mailServer')">mailServer stream</button>
       <button id='dbServer' v-on:click="emitSelection('dbServer')">dbServer stream</button>
       <button id="smsServer" v-on:click="emitSelection('smsServer')">smsServer stream</button>
+      <button id="mergeAll" v-on:click="emitSelection('mergeAll')">merge all streams</button>
     </div>
   </div>
 

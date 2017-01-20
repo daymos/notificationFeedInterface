@@ -11,7 +11,7 @@
 
 
 <script>
-import  dbData from '../assets/data';
+import dbData from '../assets/data';
 import Notification from './Notification'
 import RangeSelector from './RangeSelector';
 
@@ -20,7 +20,6 @@ import { updateState } from '../logic/handlers.js'
 import Rx from 'rxjs/Rx'
 import eventbus from './eventBus'
 
-
 export default {
   name: 'notificationList',
   components:{ Notification, RangeSelector },
@@ -28,7 +27,7 @@ export default {
     return {
       filterParam: '0',
       notifications: [] ,
-      update: null,
+      update: [],
       dictionary: {
         mailServer: 'localhost:3001/',
         dbServer: 'localhost:3002/',
@@ -44,14 +43,56 @@ export default {
       this.filterParam = param 
     },
     updateObservable(socketUrl){
-      this.notifications = [] 
-      if(this.update !== null) this.update.complete()
+      if(this.notifications.length > 0) this.update.complete()
+      this.notifications = []
       let socket = io(this.dictionary[socketUrl])
 
-      this.update = Rx.Observable.fromEvent(socket, 'newInvite').subscribe(el => { 
-        this.notifications.push(JSON.parse(el))
-        this.notifications = _.sortBy( _.prop('invite_time'))(this.notifications).reverse()
-      })
+      switch(socketUrl){
+        case 'mailServer':
+          this.update = Rx.Observable.fromEvent(socket, 'newInvite')
+            .map(el => JSON.parse(el)) 
+            .bufferCount(5)
+            .subscribe(el => { 
+              this.notifications = this.notifications.concat(el) 
+              this.notifications = _.sortBy( _.prop('invite_time'))(this.notifications).reverse()
+            })
+            break;
+          case 'dbServer':
+            //buffer and concat
+            this.update = Rx.Observable.fromEvent(socket, 'newInvite')
+              .map(el => JSON.parse(el)) 
+              .subscribe(el => { 
+                this.notifications = this.notifications.concat(el) 
+                this.notifications = _.sortBy( _.prop('invite_time'))(this.notifications).reverse()
+              })
+
+              break;
+            case 'smsServer':
+              //show as is
+              this.update = Rx.Observable.fromEvent(socket, 'newInvite')
+                .map(el => JSON.parse(el)) 
+                .subscribe(el => { 
+                  this.notifications = this.notifications.concat(el) 
+                  this.notifications = _.sortBy( _.prop('invite_time'))(this.notifications).reverse()
+                })
+                break;
+              case 'mergeAll':
+              let socket1 = io(this.dictionary.mailServer)
+              let socket2 = io(this.dictionary.dbServer)
+              let socket3 = io(this.dictionary.smsServer)
+
+              this.update = Rx.Observable.fromEvent(socket1, 'newInvite')
+                .merge(Rx.Observable.fromEvent(socket2, 'newInvite'))
+                .merge(Rx.Observable.fromEvent(socket3, 'newInvite'))
+                .map(el => JSON.parse(el)) 
+                .subscribe(el => { 
+                  this.notifications = this.notifications.concat(el) 
+                  this.notifications = _.sortBy( _.prop('invite_time'))(this.notifications).reverse()
+                })
+              break;
+            default:
+              console.log(socketUrl)
+      }
     }
   },
   computed: {
